@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="rest-assured-homework" verbose="1">
+    <test name="bookstore">
+        <classes>
+            <class name="com.tbc.restassured.BookStoreTest"/>
+        </classes>
+    </test>
+    <test name="petstore">
+        <classes>
+            <class name="com.tbc.restassured.PetStoreTest"/>
+        </classes>
+    </test>
+    <test name="openlibrary">
+        <classes>
+            <class name="com.tbc.restassured.OpenLibraryTest"/>
+        </classes>
+    </test>
+</suite>

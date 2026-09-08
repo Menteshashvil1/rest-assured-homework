@@ -1,141 +1,146 @@
 package com.tbc.restassured;
 
+import data.Constants;
+import data.PetFactory;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import model.Pet;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.matchesPattern;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.hamcrest.Matchers.hasItem;
 
 public class PetStoreTest extends BaseTest {
 
-    private static final long ORDER_ID = 7_654_321L;
-    private static final long PET_ID = 7_654_322L;
-    private static final Pattern SESSION_ID = Pattern.compile("\\d{10,}");
+    private Pet createdPet;
+    private String updatedName;
 
     @Override
     protected String baseUri() {
-        return PETSTORE_URL;
+        return Constants.PETSTORE_URL;
     }
 
-    @Test
-    public void createsStoreOrder() {
-        Map<String, Object> order = new LinkedHashMap<>();
-        order.put("id", ORDER_ID);
-        order.put("petId", PET_ID);
-        order.put("quantity", 3);
-        order.put("shipDate", "2026-09-05T10:15:30.000+0000");
-        order.put("status", "placed");
-        order.put("complete", true);
+    @BeforeClass(dependsOnMethods = "setUpSpec")
+    public void createPet() {
+        createdPet = PetFactory.randomPet(Constants.PET_STATUS);
 
         given()
                 .spec(spec)
                 .contentType(ContentType.JSON)
-                .body(order)
+                .body(createdPet)
                 .when()
-                .post("/store/order")
+                .post(Constants.PET_PATH)
                 .then()
-                .statusCode(200)
-                .body("id", equalTo((int) ORDER_ID))
-                .body("petId", equalTo((int) PET_ID))
-                .body("quantity", equalTo(3))
-                .body("status", equalTo("placed"))
-                .body("complete", equalTo(true))
-                .body("shipDate", notNullValue());
+                .statusCode(200);
     }
 
-    @BeforeClass(alwaysRun = true)
-    public void createPetUnderTest() {
-        Map<String, Object> pet = new LinkedHashMap<>();
-        pet.put("id", PET_ID);
-        pet.put("name", "Buddy");
-        pet.put("status", "available");
+    @Test
+    public void createPetReturnsSubmittedData() {
+        Pet pet = PetFactory.randomPet(Constants.PET_STATUS);
 
         given()
                 .spec(spec)
                 .contentType(ContentType.JSON)
                 .body(pet)
                 .when()
-                .post("/pet")
+                .post(Constants.PET_PATH)
                 .then()
                 .statusCode(200)
-                .body("id", equalTo((int) PET_ID));
+                .body("id", equalTo((int) pet.getId()))
+                .body("name", equalTo(pet.getName()))
+                .body("status", equalTo(pet.getStatus()))
+                .body("category.name", equalTo(pet.getCategory().getName()))
+                .body("photoUrls[0]", equalTo(pet.getPhotoUrls().get(0)));
     }
 
     @Test
-    public void updatesPetWithFormParameters() {
-        given()
-                .spec(spec)
-                .contentType(ContentType.URLENC)
-                .formParam("petId", PET_ID)
-                .formParam("name", "Rex")
-                .formParam("status", "sold")
-                .when()
-                .post("/pet/{petId}", PET_ID)
-                .then()
-                .statusCode(200)
-                .body("code", notNullValue())
-                .body("type", notNullValue())
-                .body("message", equalTo(String.valueOf(PET_ID)));
-    }
-
-    @Test
-    public void invalidPetIdReturnsNotFoundInBody() {
-        given()
-                .spec(spec)
-                .when()
-                .get("/pet/{petId}", "not-a-number")
-                .then()
-                .statusCode(404)
-                .body("code", equalTo(404));
-    }
-
-    @Test
-    public void loginReturnsSessionIdWithTenOrMoreDigits() {
+    public void createdPetIsFoundByStatus() {
         Response response = given()
                 .spec(spec)
-                .queryParam("username", "tbc-student")
-                .queryParam("password", "tbc-password")
+                .queryParam(Constants.STATUS_PARAM, Constants.PET_STATUS)
                 .when()
-                .get("/user/login")
+                .get(Constants.PET_FIND_BY_STATUS_PATH)
                 .then()
                 .statusCode(200)
-                .body("code", equalTo(200))
-                .body("message", matchesPattern(".*\\d{10,}.*"))
                 .extract()
                 .response();
 
-        String message = response.jsonPath().getString("message");
-        Matcher matcher = SESSION_ID.matcher(message);
-        assertTrue(matcher.find(), "message must contain a numeric session id: " + message);
+        List<Integer> ids = response.jsonPath().getList("id");
+        assertThat(ids, hasItem((int) createdPet.getId()));
 
-        String sessionId = matcher.group();
-        assertTrue(sessionId.length() >= 10, "session id must have at least 10 digits: " + sessionId);
-        assertEquals(sessionId.replaceAll("\\d", "").length(), 0, "session id must be digits only");
+        Pet foundPet = response.jsonPath()
+                .param("petId", createdPet.getId())
+                .getObject("find { it.id == petId }", Pet.class);
 
-        System.out.println("Login message: " + message);
-        System.out.println("Extracted session id: " + sessionId);
+        assertThat(foundPet.getName(), equalTo(createdPet.getName()));
+        assertThat(foundPet.getStatus(), equalTo(createdPet.getStatus()));
+        assertThat(foundPet.getCategory().getName(), equalTo(createdPet.getCategory().getName()));
+        assertThat(foundPet.getPhotoUrls(), equalTo(createdPet.getPhotoUrls()));
     }
 
-    @Test
-    public void inventoryIsNotEmpty() {
+    @Test(dependsOnMethods = "createdPetIsFoundByStatus")
+    public void petIsUpdatedWithFormData() {
+        updatedName = createdPet.getName() + "-updated";
+
         given()
                 .spec(spec)
+                .contentType(ContentType.URLENC)
+                .pathParam(Constants.PET_ID_PARAM, createdPet.getId())
+                .formParam(Constants.NAME_PARAM, updatedName)
+                .formParam(Constants.STATUS_PARAM, Constants.SOLD_STATUS)
                 .when()
-                .get("/store/inventory")
+                .post(Constants.PET_BY_ID_PATH)
+                .then()
+                .statusCode(200);
+    }
+
+    @Test(dependsOnMethods = "petIsUpdatedWithFormData")
+    public void updatedPetHasNewNameAndStatus() {
+        given()
+                .spec(spec)
+                .pathParam(Constants.PET_ID_PARAM, createdPet.getId())
+                .when()
+                .get(Constants.PET_BY_ID_PATH)
                 .then()
                 .statusCode(200)
-                .body("size()", greaterThan(0));
+                .body("name", equalTo(updatedName))
+                .body("status", equalTo(Constants.SOLD_STATUS));
+    }
+
+    @Test(dependsOnMethods = "createdPetIsFoundByStatus")
+    public void petImageIsUploaded() throws IOException {
+        File imageFile = createTempFile();
+        long fileSize = imageFile.length();
+
+        given()
+                .spec(spec)
+                .contentType(ContentType.MULTIPART)
+                .pathParam(Constants.PET_ID_PARAM, createdPet.getId())
+                .multiPart("additionalMetadata", Constants.UPLOAD_METADATA)
+                .multiPart("file", imageFile)
+                .when()
+                .post(Constants.PET_UPLOAD_IMAGE_PATH)
+                .then()
+                .statusCode(200)
+                .body("message", containsString(Constants.UPLOAD_METADATA))
+                .body("message", containsString(imageFile.getName()))
+                .body("message", containsString(fileSize + " bytes"));
+    }
+
+    private File createTempFile() throws IOException {
+        Path path = Files.createTempDirectory("petstore").resolve(Constants.UPLOAD_FILE_NAME);
+        Files.writeString(path, "fake pet photo content");
+
+        return path.toFile();
     }
 }

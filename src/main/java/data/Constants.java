@@ -19,4 +19,29 @@ public class Constants {
 
     public static final String UPLOAD_METADATA = "uploaded-by-nodar";
     public static final String UPLOAD_FILE_NAME = "pet-photo.txt";
+
+    public static final String PLATZI_URL = "https://api.escuelajs.co/api";
+    public static final String PLATZI_USERS_PATH = "/v1/users/";
+    public static final String PLATZI_LOGIN_PATH = "/v1/auth/login";
+    public static final String PLATZI_PROFILE_PATH = "/v1/auth/profile";
+    public static final String PLATZI_DEFAULT_ROLE = "customer";
+    public static final String PLATZI_AVATAR = "https://picsum.photos/800";
+
+    public static final String BOOKER_URL = "https://restful-booker.herokuapp.com";
+    public static final String BOOKER_AUTH_PATH = "/auth";
+    public static final String BOOKER_BOOKING_PATH = "/booking";
+    public static final String BOOKER_BOOKING_BY_ID_PATH = "/booking/{id}";
+    public static final String BOOKER_USERNAME = "admin";
+    public static final String BOOKER_PASSWORD = "password123";
+
+    public static final String BOOKSTORE_URL = "https://bookstore.toolsqa.com";
+    public static final String BOOKS_PATH = "/BookStore/v1/Books";
+
+    public static final int MAX_BOOK_PAGES = 1000;
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String BEARER_PREFIX = "Bearer ";
+    public static final String TOKEN_COOKIE = "token";
+    public static final String ID_PARAM = "id";
+    public static final String APPLICATION_JSON = "application/json";
 }

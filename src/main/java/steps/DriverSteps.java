@@ -1,7 +1,7 @@
 package steps;
 
 import api.client.DriverApi;
-import data.models.response.Driver;
+import data.models.responses.f1.Driver;
 
 public class DriverSteps {
 

@@ -5,3 +5,6 @@ test-output/
 .classpath
 .project
 .settings/
+allure-results/
+allure-report/
+.allure/

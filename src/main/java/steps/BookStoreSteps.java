@@ -1,8 +1,8 @@
 package steps;
 
 import api.client.BookStoreApi;
-import data.models.response.Book;
-import data.models.response.BooksResponse;
+import data.models.responses.bookstore.Book;
+import data.models.responses.bookstore.BooksResponse;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package data.models.response;
+package data.models.responses.platzi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

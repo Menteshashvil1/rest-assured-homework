@@ -1,8 +1,8 @@
 package api.tests;
 
 import data.factory.BookingFactory;
-import data.models.request.Booking;
-import data.models.response.BookingResponse;
+import data.models.requests.booker.Booking;
+import data.models.responses.booker.BookingResponse;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import steps.BookerSteps;

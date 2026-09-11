@@ -2,9 +2,9 @@ package api.tests;
 
 import data.Constants;
 import data.factory.UserFactory;
-import data.models.request.CreateUserRequest;
-import data.models.response.LoginResponse;
-import data.models.response.UserResponse;
+import data.models.requests.platzi.CreateUserRequest;
+import data.models.responses.platzi.LoginResponse;
+import data.models.responses.platzi.UserResponse;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import steps.PlatziSteps;

@@ -1,7 +1,7 @@
 package data.factory;
 
-import data.models.request.Booking;
-import data.models.request.BookingDates;
+import data.models.requests.booker.Booking;
+import data.models.requests.booker.BookingDates;
 import net.datafaker.Faker;
 
 import java.time.LocalDate;

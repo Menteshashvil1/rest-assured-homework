@@ -44,4 +44,16 @@ public class Constants {
     public static final String TOKEN_COOKIE = "token";
     public static final String ID_PARAM = "id";
     public static final String APPLICATION_JSON = "application/json";
+
+    public static final String SWAPI_URL = "https://www.swapi.tech";
+    public static final String PLANETS_PATH = "/api/planets/";
+    public static final String FORMAT_PARAM = "format";
+    public static final String JSON_FORMAT = "json";
+
+    public static final String PETSTORE3_URL = "https://petstore3.swagger.io/api/v3";
+    public static final String STORE_ORDER_PATH = "/store/order";
+
+    public static final String ISO_INSTANT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    public static final String UTC = "UTC";
+    public static final String UNKNOWN = "unknown";
 }

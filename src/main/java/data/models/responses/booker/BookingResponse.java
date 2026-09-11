@@ -1,7 +1,7 @@
-package data.models.response;
+package data.models.responses.booker;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import data.models.request.Booking;
+import data.models.requests.booker.Booking;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingResponse {

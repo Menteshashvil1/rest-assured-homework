@@ -1,8 +1,8 @@
 package data.factory;
 
 import data.Constants;
-import data.models.request.CreateUserRequest;
-import data.models.request.LoginRequest;
+import data.models.requests.platzi.CreateUserRequest;
+import data.models.requests.platzi.LoginRequest;
 import net.datafaker.Faker;
 
 public class UserFactory {

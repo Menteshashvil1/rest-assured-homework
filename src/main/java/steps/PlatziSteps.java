@@ -1,10 +1,10 @@
 package steps;
 
 import api.client.PlatziApi;
-import data.models.request.CreateUserRequest;
-import data.models.request.LoginRequest;
-import data.models.response.LoginResponse;
-import data.models.response.UserResponse;
+import data.models.requests.platzi.CreateUserRequest;
+import data.models.requests.platzi.LoginRequest;
+import data.models.responses.platzi.LoginResponse;
+import data.models.responses.platzi.UserResponse;
 import org.testng.Assert;
 
 public class PlatziSteps {

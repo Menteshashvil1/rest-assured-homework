@@ -1,4 +1,4 @@
-package data.models.request;
+package data.models.requests.booker;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,8 +1,8 @@
 package api.client;
 
 import data.Constants;
-import data.models.request.CreateUserRequest;
-import data.models.request.LoginRequest;
+import data.models.requests.platzi.CreateUserRequest;
+import data.models.requests.platzi.LoginRequest;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;

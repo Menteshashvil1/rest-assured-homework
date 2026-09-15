@@ -1,4 +1,4 @@
-package data.models.response;
+package data.models.responses.bookstore;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

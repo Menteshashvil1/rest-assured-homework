@@ -1,6 +1,6 @@
 package api.tests;
 
-import data.models.response.Driver;
+import data.models.responses.f1.Driver;
 import org.testng.annotations.Test;
 import steps.DriverSteps;
 

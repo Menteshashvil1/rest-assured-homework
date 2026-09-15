@@ -1,4 +1,4 @@
-package data.models.request;
+package data.models.requests.platzi;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

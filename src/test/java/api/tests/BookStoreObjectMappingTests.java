@@ -1,7 +1,7 @@
 package api.tests;
 
 import data.Constants;
-import data.models.response.Book;
+import data.models.responses.bookstore.Book;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import steps.BookStoreSteps;

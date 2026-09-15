@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="rest-assured-homework" verbose="1">
+    <test name="swapi-planets">
+        <classes>
+            <class name="api.tests.PlanetTests"/>
+        </classes>
+    </test>
+    <test name="booker-update-booking">
+        <classes>
+            <class name="api.tests.UpdateBookingTests"/>
+        </classes>
+    </test>
+    <test name="petstore-store-order">
+        <classes>
+            <class name="api.tests.StoreOrderTests"/>
+        </classes>
+    </test>
     <test name="platzi-auth">
         <classes>
             <class name="api.tests.PlatziAuthTests"/>

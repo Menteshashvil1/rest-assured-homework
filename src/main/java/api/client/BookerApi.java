@@ -1,8 +1,9 @@
 package api.client;
 
 import data.Constants;
-import data.models.request.AuthRequest;
-import data.models.request.Booking;
+import data.models.requests.booker.AuthRequest;
+import data.models.requests.booker.Booking;
+import data.models.requests.booker.UpdateBookingRequest;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
@@ -41,6 +42,25 @@ public class BookerApi extends BaseApi {
                 .body(booking)
                 .when()
                 .patch(Constants.BOOKER_BOOKING_BY_ID_PATH);
+    }
+
+    public Response updateBooking(int bookingId, String token, UpdateBookingRequest booking) {
+        return given()
+                .spec(BOOKER_SPEC)
+                .cookie(Constants.TOKEN_COOKIE, token)
+                .pathParam(Constants.ID_PARAM, bookingId)
+                .body(booking)
+                .when()
+                .put(Constants.BOOKER_BOOKING_BY_ID_PATH);
+    }
+
+    public Response updateBookingWithoutToken(int bookingId, UpdateBookingRequest booking) {
+        return given()
+                .spec(BOOKER_SPEC)
+                .pathParam(Constants.ID_PARAM, bookingId)
+                .body(booking)
+                .when()
+                .put(Constants.BOOKER_BOOKING_BY_ID_PATH);
     }
 
     public Response deleteBooking(int bookingId, String token) {

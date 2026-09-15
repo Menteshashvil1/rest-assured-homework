@@ -1,4 +1,4 @@
-package data.models.request;
+package data.models.requests.booker;
 
 public class AuthRequest {
     private String username;
